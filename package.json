@@ -1,0 +1,30 @@
+{
+  "name": "refactoring-js-book-martin-fowler",
+  "version": "1.0.0",
+  "description": "Refactoring Book",
+  "main": "Refactor.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^8.8.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "prettier": "^2.5.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/** --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FlashGooden/Refactoring-JS-Martin-Fowler.git"
+  },
+  "keywords": [
+    "refactoring"
+  ],
+  "author": "Flash Gooden",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FlashGooden/Refactoring-JS-Martin-Fowler/issues"
+  },
+  "homepage": "https://github.com/FlashGooden/Refactoring-JS-Martin-Fowler#readme"
+}
