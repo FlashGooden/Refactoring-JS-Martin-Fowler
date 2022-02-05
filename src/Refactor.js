@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-const plays = {
+const playList = {
   hamlet: { name: 'Hamlet', type: 'tragedy' },
   'as-like': { name: 'As You Like It', type: 'comedy' },
   othello: { name: 'Othello', type: 'tragedy' },
@@ -23,7 +23,30 @@ const bills = {
   ],
 };
 
-const statement = (invoice, playList) => {
+const amountFor = (perf, play) => {
+  let thisAmount = 0;
+
+  switch (play.type) {
+    case 'tragedy':
+      thisAmount = 40000;
+      if (perf.audience > 30) {
+        thisAmount += 1000 * (perf.audience - 30);
+      }
+      break;
+    case 'comedy':
+      thisAmount = 30000;
+      if (perf.audience > 20) {
+        thisAmount += 10000 + 500 * (perf.audience - 20);
+      }
+      thisAmount += 300 * perf.audience;
+      break; default:
+      throw new Error(`unknown type: ${play.type}`);
+  }
+
+  return thisAmount;
+};
+
+const statement = (invoice, plays) => {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
@@ -38,31 +61,15 @@ const statement = (invoice, playList) => {
   );
 
   for (const perf of invoice.performances) {
-    const play = playList[perf.playID];
+    const play = plays[perf.playID];
 
-    let thisAmount = 0;
+    const thisAmount = amountFor(perf, play);
 
-    switch (play.type) {
-      case 'tragedy':
-        thisAmount = 40000;
-        if (perf.audience > 30) {
-          thisAmount += 1000 * (perf.audience - 30);
-        }
-        break;
-      case 'comedy':
-        thisAmount = 30000;
-        if (perf.audience > 20) {
-          thisAmount += 10000 + 500 * (perf.audience - 20);
-        }
-        thisAmount += 300 * perf.audience;
-        break; default:
-        throw new Error(`unknown type: ${playList.type}`);
-    }
     // add volume credits
     // add extra credit for every ten comedy attendees
-    if (playList.type === 'comedy') volumeCredits += Math.floor(perf.audience / 5);
+    if (plays.type === 'comedy') volumeCredits += Math.floor(perf.audience / 5);
     // print line for this order
-    result += ` ${playList.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
+    result += ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
     totalAmount += thisAmount;
   }
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
@@ -71,4 +78,4 @@ const statement = (invoice, playList) => {
   return result;
 };
 
-console.log(statement(bills, plays));
+console.log(statement(bills, playList));
